@@ -80,15 +80,15 @@ visitors_schema = VisitorSchema(many=True)
 
 class Cat(db.Model):
     id = db.Column(db.String, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    breed = db.Column(db.String(100), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    color = db.Column(db.String(50))
-    adoption_fee = db.Column(db.Float)
+    name = db.Column(db.String(150), nullable=False)
+    breed = db.Column(db.String(100))
+    age = db.Column(db.String(100))
+    color = db.Column(db.String(100))
+    adoption_fee = db.Column(db.String(100))
     user_token = db.Column(db.String, db.ForeignKey('user.token'), nullable=False)
 
     def __init__(self, name, breed, age, color, adoption_fee, user_token, id=''):
-        self.id = self.set_id()
+        self.id = self.set_id() if not id else id
         self.name = name
         self.breed = breed
         self.age = age
@@ -97,18 +97,14 @@ class Cat(db.Model):
         self.user_token = user_token
 
     def __repr__(self):
-        return f'The following cat has been added to the Cat Adoption: {self.name} ({self.breed})'
+        return f'The following cat has been added: {self.name}'
 
     def set_id(self):
         return secrets.token_urlsafe()
 
 class CatSchema(ma.Schema):
     class Meta:
-        fields = ['id', 'name', 'breed', 'age', 'color', 'adoption_fee']
+        fields = ['id', 'name', 'breed', 'age', 'color' 'adoption_fee']
 
-cat_schema = CatSchema()
-cats_schema = CatSchema(many=True)
-
-
-
-
+Cat_schema = CatSchema()
+Cats_schema = CatSchema(many=True)
