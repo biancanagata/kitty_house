@@ -817,13 +817,13 @@ textarea#comment.message-bt::placeholder {
     color: #2e2e2d;
 }
 
-.send_bt {
+.send_bt, .manage-cats-button {
     width: 170px;
     margin: 0 auto;
     text-align: center;
 }
 
-.send_bt button {
+.send_bt button, .manage-cats-button button {
     width: 100%;
     text-align: center;
     font-size: 16px;
@@ -839,7 +839,7 @@ textarea#comment.message-bt::placeholder {
 
 }
 
-.send_bt button:hover {
+.send_bt button:hover, .manage-cats-button:hover {
     color: #fefefd;
     background-color: #4a4949;
 }
