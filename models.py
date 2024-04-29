@@ -104,7 +104,7 @@ class Cat(db.Model):
 
 class CatSchema(ma.Schema):
     class Meta:
-        fields = ['id', 'name', 'breed', 'age', 'color' 'adoption_fee']
+        fields = ['id', 'name', 'breed', 'age', 'color', 'adoption_fee']
 
-Cat_schema = CatSchema()
-Cats_schema = CatSchema(many=True)
+cat_schema = CatSchema()
+cats_schema = CatSchema(many=True)

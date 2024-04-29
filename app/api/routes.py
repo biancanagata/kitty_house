@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template
 from helpers import token_required
-from models import db, User, Visitor, visitor_schema, visitors_schema, Cat, Cats_schema, Cat_schema
+from models import db, User, Visitor, visitor_schema, visitors_schema, Cat, Cats_schema, cat_schema
 
 
 api = Blueprint('api',__name__, url_prefix='/api')
@@ -85,14 +85,15 @@ def create_cat(current_user_token):
     db.session.add(cat)
     db.session.commit()
 
-    response = Cat_schema.dump(cat)
-    return jsonify(response), 201
+    response = cat_schema.dump(cat)
+    return jsonify(response)
 
 @api.route('/cats', methods=['GET'])
 @token_required
 def get_all_cats(current_user_token):
-    cats = Cat.query.filter_by(user_token=current_user_token.token).all()
-    response = Cats_schema.dump(cats)
+    user_token = current_user_token.token
+    cats = Cat.query.filter_by(user_token=user_token).all()
+    response = cats_schema.dump(cats)
     return jsonify(response), 200
 
 @api.route('/cats/<id>', methods=['GET'])
@@ -101,7 +102,7 @@ def get_single_cat(current_user_token, id):
     cat = Cat.query.get(id)
     if cat.user_token != current_user_token.token:
         return jsonify({'message': 'Unauthorized'}), 403
-    response = Cat_schema.dump(cat)
+    response = cat_schema.dump(cat)
     return jsonify(response), 200
 
 @api.route('/cats/<id>', methods=['PUT'])
@@ -118,7 +119,7 @@ def update_cat(current_user_token, id):
     cat.adoption_fee = request.json.get('adoption_fee')
 
     db.session.commit()
-    response = Cat_schema.dump(cat)
+    response = cat_schema.dump(cat)
     return jsonify(response), 200
 
 @api.route('/cats/<id>', methods=['DELETE'])
@@ -130,5 +131,5 @@ def delete_cat(current_user_token, id):
 
     db.session.delete(cat)
     db.session.commit()
-    response = Cat_schema.dump(cat)
+    response = cat_schema.dump(cat)
     return jsonify(response), 200
